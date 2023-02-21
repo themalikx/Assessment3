@@ -5,9 +5,9 @@ namespace Assesment3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Library : ControllerBase
+    public class LibraryController : ControllerBase
     {
-        public Library()
+        public LibraryController()
         {
 
         }
