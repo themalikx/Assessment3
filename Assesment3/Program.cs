@@ -1,9 +1,6 @@
 using Assesment3.Db;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Assesment3.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +41,8 @@ void RegisterServices(IServiceCollection services, IConfiguration configuration)
     services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(connectionString));
 
-   
+    services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+
 
 }

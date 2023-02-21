@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Assesment3.Entities;
+using Assesment3.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assesment3.Controllers
 {
@@ -7,11 +10,20 @@ namespace Assesment3.Controllers
     [ApiController]
     public class LibraryController : ControllerBase
     {
-        public LibraryController()
-        {
+        private readonly IRepository<Book> _bookRepository;
 
+        public LibraryController(IRepository<Book> bookRepository)
+        {
+            _bookRepository = bookRepository;
         }
 
-       
+        [HttpGet]
+        [Route("GetBooks")]
+        public async Task<ActionResult> GetBooks()
+        {
+            var books = await _bookRepository.Table.ToListAsync();
+            return Ok(books);
+        }
+
     }
 }
