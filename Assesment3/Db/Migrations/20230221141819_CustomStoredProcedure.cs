@@ -30,6 +30,16 @@ namespace Assesment3.Db.Migrations
         End
          Go
 
+        CREATE PROCEDURE [dbo].[GetBookById]
+                        @bookId int AS
+        BEGIN
+	        SET NOCOUNT ON;
+	        select Book.Id, Title, Subtitle, YearOfRelease, dbo.GetCategoriesByChildCategoryId(CategoryId) as Categories, Author.Name as AuthorName, Author.DateOfBirth as AuthorDateOfBirth from Book  
+	        inner join Author on Book.AuthorId = Author.Id
+	        where Book.Id = @bookId 
+        END
+        Go
+
         CREATE PROCEDURE [dbo].[GetAllBooks]
             AS    
         BEGIN
