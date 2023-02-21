@@ -1,4 +1,5 @@
 ﻿using Assesment3.Db.EntityConfigs;
+using Assesment3.Dtos;
 using Assesment3.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,9 +25,16 @@ namespace Assesment3.Db
 
             Seeder.SeedDataIntoDatabase(builder);
 
+
             base.OnModelCreating(builder);
 
 
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            base.ConfigureConventions(configurationBuilder);
+            configurationBuilder.DefaultTypeMapping<BookDto>();
         }
     }
 }

@@ -31,6 +31,7 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     public IQueryable<T> Table => _dbSet;
+    public AppDbContext Context => _dbContext;
 
     public async Task<int> CountAsync()
     {

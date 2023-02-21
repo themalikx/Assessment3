@@ -1,5 +1,6 @@
 using Assesment3.Db;
 using Assesment3.Repositories;
+using Assesment3.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,12 +37,13 @@ void RegisterServices(IServiceCollection services, IConfiguration configuration)
 
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-    
+
 
     services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(connectionString));
 
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+    services.AddScoped<IBookService, BookService>();
 
 
 

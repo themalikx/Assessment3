@@ -1,3 +1,6 @@
+using Assesment3.Db;
+using Microsoft.EntityFrameworkCore;
+
 namespace Assesment3.Repositories;
 
 public interface IRepository<T> where T : class
@@ -9,5 +12,6 @@ public interface IRepository<T> where T : class
     Task<int> CountAsync();
     Task<int> CompleteAsync();
     IQueryable<T> Table { get; }
+    public AppDbContext Context { get; }
     T Get(Func<T, bool> where);
 }

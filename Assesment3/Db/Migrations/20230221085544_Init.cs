@@ -92,31 +92,4 @@ namespace Assesment3.Db.Migrations
                 name: "BookCategory");
         }
     }
-
-    //public partial class Init : Migration
-    //{
-    //    /// <inheritdoc />
-    //    protected override void Up(MigrationBuilder migrationBuilder)
-    //    {
-
-    //        var sp = @"CREATE PROCEDURE [dbo].[GetBookById]
-    //                @bookId int
-    //            AS
-    //            BEGIN
-    //                SET NOCOUNT ON;
-    //                select * from Students where FirstName like @FirstName +'%'
-    //            END";
-
-    //        migrationBuilder.Sql(sp);
-    //    }
-
-    //    /// <inheritdoc />
-    //    protected override void Down(MigrationBuilder migrationBuilder)
-    //    {
-    //        var query = @"IF OBJECT_ID('my_procedure') IS NOT NULL DROP PROCEDURE my_procedure
-    //                     GO";
-    //        migrationBuilder.Sql(query);
-
-    //    }
-    //}
 }
