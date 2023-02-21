@@ -15,13 +15,11 @@ namespace Assesment3.Services
     }
     public class BookService : IBookService
     {
-        private readonly IRepository<Book> _bookRepository;
         private readonly IConfiguration _configuration;
 
-        public BookService(IRepository<Book> bookRepository,
+        public BookService(
             IConfiguration configuration)
         {
-            _bookRepository = bookRepository;
             _configuration = configuration;
         }
 

@@ -1,0 +1,30 @@
+﻿@model Assesment3.Controllers.StackOverFlowResponse
+
+<div>
+    @foreach (var q in Model.items)
+    {
+        <div class="card">
+            <div class="card-header">
+                Question
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>@q.title</p>
+                    
+                    <footer class="blockquote-footer">Posted by: @q.owner.display_name <a class="btn btn-sm btn-outline-light" asp-action="Question">View Question</a></footer>
+                </blockquote>
+                <div>
+                    @foreach (var qTag in q.tags)
+                    {
+                        <text> @qTag </text>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.items.Any())
+    {
+        <div>No question found.</div>
+    }
+
+</div>

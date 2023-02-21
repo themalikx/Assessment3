@@ -44,6 +44,7 @@ void RegisterServices(IServiceCollection services, IConfiguration configuration)
 
     services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     services.AddScoped<IBookService, BookService>();
+    services.AddScoped<ICategoryService, CategoryService>();
 
 
 

@@ -1,0 +1,40 @@
+﻿@model List<SelectListItem>
+<div class="text-center">
+    <div>
+        <h1 class="text-center mb-4"> Two dropdown lists</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <select id="main-cat" class="form-control" asp-items="@Model"></select>
+        </div>
+        <div class="col">
+            <select id="second-cat" class="form-control"></select>
+            <div class="d-none" id="loading">loading...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+
+        $("#main-cat").change(function () {
+            let id = $(this).val();
+            $("#loading").removeClass("d-none");
+            $.ajax({
+                url: "/Home/CategoriesByParentId/" + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    var options = "";
+                    response.forEach(function (item) {
+                        options += `<option value="${item.value}">${item.text}</option>`;
+                    });
+                    $("#second-cat").html(options);
+                },
+                complete: function () {
+                    $("#loading").addClass("d-none");
+                }
+            });
+        })
+    });
+</script>

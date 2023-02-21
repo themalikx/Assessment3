@@ -1,7 +1,7 @@
 ﻿using Assesment3.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Assesment3.Controllers
+namespace Assesment3.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
