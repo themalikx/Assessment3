@@ -1,8 +1,7 @@
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 using Assesment3.Services;
 using Newtonsoft.Json;
-using RestSharp;
+using System.Net;
 
 namespace Assesment3.Controllers
 {
@@ -10,60 +9,62 @@ namespace Assesment3.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryService _categoryService;
+        private readonly HttpClient _httpClient;
 
         public StackOverFlowController(ILogger<HomeController> logger,
             ICategoryService categoryService)
         {
             _logger = logger;
             _categoryService = categoryService;
+            _httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+            _httpClient.BaseAddress = new Uri("https://api.stackexchange.com/2.3/");
+
+
         }
 
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var client = new RestClient("https://api.stackexchange.com/2.3");
-                var request = new RestRequest("/questions?page=1&pagesize=50&order=desc&sort=activity&site=stackoverflow", Method.Get);
 
-                var response = client.Execute(request);
-                if (response.IsSuccessful)
+
+                var response = await _httpClient.GetAsync("questions?page=1&pagesize=50&order=desc&sort=activity&site=stackoverflow");
+
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrWhiteSpace(json))
                 {
-                    if (response.Content != null)
-                    {
-                        var result = JsonConvert.DeserializeObject<StackOverFlowResponse>(response.Content);
-                        return View(result);
-                    }
+                    var result = JsonConvert.DeserializeObject<StackOverFlowResponse>(json);
+                    return View(result);
                 }
 
+
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // ignored
+                _logger.LogError(e.Message);
+
             }
 
             return View(new StackOverFlowResponse());
         }
 
 
-        public IActionResult Question(long id)
+        public async Task<IActionResult> Question(long id)
         {
             try
             {
-                var client = new RestClient("https://api.stackexchange.com/2.3");
-                var request = new RestRequest($"/questions/{id}?order=desc&sort=activity&site=stackoverflow", Method.Get);
-
-                var response = client.Execute(request);
-                if (response.IsSuccessful)
+                var response = await _httpClient.GetAsync($"/questions/{id}?order=desc&sort=activity&site=stackoverflow");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrWhiteSpace(json))
                 {
-                    if (response.Content != null)
-                    {
-                        var result = JsonConvert.DeserializeObject<StackOverFlowResponse>(response.Content);
-                        if (result != null && result.items.Any())
-                            return View(result);
-                    }
+                    var result = JsonConvert.DeserializeObject<StackOverFlowResponse>(json);
+                    if (result != null && result.items.Any())
+                        return View(result);
                 }
 
             }
@@ -78,6 +79,10 @@ namespace Assesment3.Controllers
 
     public class StackOverFlowResponse
     {
+        public StackOverFlowResponse()
+        {
+            items = new List<Item>();
+        }
         public List<Item> items { get; set; }
         public class Item
         {
